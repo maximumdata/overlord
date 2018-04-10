@@ -1,4 +1,4 @@
-const Store = require('../store.js');
+const Store = require('../models/Store.js');
 const untildify = require('untildify');
 
 module.exports = new Store({

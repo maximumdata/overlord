@@ -1,5 +1,6 @@
 const { spawn } = require('child_process');
-
+const { mainWindow } = require('../main.js');
+const { ipcMain } = require('electron');
 // this will be a class that can run a child process and pipe output and erorrs to log files.
 // you will be able to require it and instantiate with a name, a command to run, and log titles
 
@@ -12,33 +13,45 @@ class Task {
         this.name = opts.name;
         this.command = opts.command;
         this.args = opts.args;
+        this.container = opts.container;
     }
 
-    run() {
+    run(window) {
+        let cmd = `${this.command} ${this.args}`;
+        window.send('task-stdout', cmd);
         try {
-            let ls = spawn(this.command, this.args, { detached: true });
+            let ls = spawn(this.command, this.args);
 
             ls.stdout.on('data', (data) => {
-              console.log(`${data}`);
+              window.send('task-stdout', {
+                  container: this.container,
+                  task: this.name,
+                  data
+              })
             });
 
             ls.stderr.on('data', (data) => {
-              console.log(`stderr: ${data}`);
+                window.send('task-stderr', {
+                    container: this.container,
+                    task: this.name,
+                    data
+                })
             });
 
             ls.on('close', (code) => {
-              console.log(`child process exited with code ${code}`);
+                window.send('task-close', {
+                    container: this.container,
+                    task: this.name,
+                    code
+                })
             });
         } catch (e) {
             console.log(e)
         } finally {
             console.log('finally');
         }
-
-
-
     }
-}
 
+}
 
 module.exports = Task;
