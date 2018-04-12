@@ -17,20 +17,20 @@ class Task {
     }
 
     run(window) {
-        let cmd = `${this.command} ${this.args}`;
-        window.send('task-stdout', cmd);
         try {
-            let ls = spawn(this.command, this.args);
+            let spawnedProc = spawn(this.command, this.args);
 
-            ls.stdout.on('data', (data) => {
-              window.send('task-stdout', {
-                  container: this.container,
-                  task: this.name,
-                  data
-              })
+            window.pids.push(spawnedProc);
+
+            spawnedProc.stdout.on('data', (data) => {
+                window.send('task-stdout', {
+                    container: this.container,
+                    task: this.name,
+                    data
+                })
             });
 
-            ls.stderr.on('data', (data) => {
+            spawnedProc.stderr.on('data', (data) => {
                 window.send('task-stderr', {
                     container: this.container,
                     task: this.name,
@@ -38,7 +38,11 @@ class Task {
                 })
             });
 
-            ls.on('close', (code) => {
+            spawnedProc.on('close', (code) => {
+                let index = window.pids.indexOf(spawnedProc);
+
+                if (index) { window.pids.splice(index, 1); }
+
                 window.send('task-close', {
                     container: this.container,
                     task: this.name,
@@ -48,7 +52,7 @@ class Task {
         } catch (e) {
             console.log(e)
         } finally {
-            console.log('finally');
+            // console.log('finally');
         }
     }
 

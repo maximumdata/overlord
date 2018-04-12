@@ -28,7 +28,8 @@
       "target": [
         "AppImage",
         "deb"
-      ]
+      ],
+      "category": "Development"
     },
     "win": {
       "target": "squirrel",
@@ -36,7 +37,7 @@
     }
   },
   "keywords": [],
-  "author": "",
+  "author": "Mike Dettmer <mike@mikedettmer.com>",
   "license": "ISC",
   "dependencies": {
     "untildify": "^3.0.2"
