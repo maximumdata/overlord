@@ -28,11 +28,3 @@ document.addEventListener("DOMContentLoaded", function(event) {
         console.log(arg);
     })
 });
-
-const shellPath = require('shell-path');
-console.log(shellPath.sync());
-
-const fixPath = require('fix-path');
-console.log(process.env.PATH);
-fixPath();
-console.log(process.env.PATH);

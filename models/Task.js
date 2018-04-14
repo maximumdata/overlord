@@ -20,7 +20,7 @@ class Task {
         try {
             let spawnedProc = spawn(this.command, this.args);
 
-            window.pids.push(spawnedProc);
+            window.processes.push(spawnedProc);
 
             spawnedProc.stdout.on('data', (data) => {
                 window.send('task-stdout', {
@@ -39,15 +39,17 @@ class Task {
             });
 
             spawnedProc.on('close', (code) => {
-                let index = window.pids.indexOf(spawnedProc);
+                if (code !== 143) {
+                    let index = window.processes.indexOf(spawnedProc);
 
-                if (index) { window.pids.splice(index, 1); }
+                    if (index) { window.processes.splice(index, 1); }
 
-                window.send('task-close', {
-                    container: this.container,
-                    task: this.name,
-                    code
-                })
+                    window.send('task-close', {
+                        container: this.container,
+                        task: this.name,
+                        code
+                    });
+                }
             });
         } catch (e) {
             console.log(e)

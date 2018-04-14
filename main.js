@@ -4,6 +4,11 @@ const fixPath = require('fix-path')();
 const stores = require('./stores');
 let mainWindow; // do this so that the window object doesn't get GC'd
 
+/**
+ * Called when a new window needs to be created. Will create the renderer window,
+ * add the menu, set window specific events, and load index.html
+ * @return {null}
+ */
 const createMainWindow = () => {
     // create the new window and set the processes array on it
     mainWindow = new BrowserWindow(stores.window.get('windowBounds'));
@@ -41,30 +46,52 @@ const createMainWindow = () => {
     mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
 }
 
+/**
+ * Event handler for setting the window location to the window store
+ * @return {null}
+ */
 const onMoveResize = () => {
     stores.window.set('windowBounds', mainWindow.getBounds());
+}
+
+/**
+ * checks for running child_processes and kills them before quitting the app
+ * @return {null}
+ */
+const beforeQuit = () => {
+    if (mainWindow.processes.length) {
+        mainWindow.processes.forEach((proc) => {
+            proc.kill();
+        });
+    }
+}
+
+/**
+ * checks if running on macOS, and keeps the tray icon open if so
+ * @return {null}
+ */
+const windowAllClosed = () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+}
+
+/**
+ * checks if the app was opened from an open tray icon on macOS with no windows
+ * @return {null}
+ */
+const activate = () => {
+    if (mainWindow === null) {
+        createWindow();
+    }
 }
 
 // event handlers
 app.on('ready', createMainWindow);
 
-app.on('before-quit', function() {
-    if (mainWindow.processes.length) {
-        mainWindow.processes.forEach(function(proc) {
-            proc.kill();
-        });
-    }
-});
+app.on('before-quit', beforeQuit);
 
 // these next two are to bring things in line with macOS standards
-app.on('window-all-closed', function() {
-    if (process.platform != 'darwin') {
-        app.quit();
-    }
-});
+app.on('window-all-closed', windowAllClosed);
 
-app.on('activate', () => {
-    if (mainWindow === null) {
-        createWindow();
-    }
-});
+app.on('activate', activate);
