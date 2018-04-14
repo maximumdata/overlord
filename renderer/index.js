@@ -23,4 +23,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
     ipcRenderer.on('task-close', (event, arg) => {
         console.log(`finished ${arg.task} with ${arg.code}`);
     });
+
+    ipcRenderer.on('path', (ev, arg) => {
+        console.log(arg);
+    })
 });
+
+const shellPath = require('shell-path');
+console.log(shellPath.sync());
+
+const fixPath = require('fix-path');
+console.log(process.env.PATH);
+fixPath();
+console.log(process.env.PATH);

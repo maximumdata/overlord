@@ -40,6 +40,7 @@
   "author": "Mike Dettmer <mike@mikedettmer.com>",
   "license": "ISC",
   "dependencies": {
+    "fix-path": "^2.1.0",
     "untildify": "^3.0.2"
   },
   "devDependencies": {
