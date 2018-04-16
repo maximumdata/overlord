@@ -49,18 +49,10 @@ const createMainWindow = () => {
     mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
     initAutoUpdate();
 
+    // this is wicked sloppy
     let trayIcon = new Tray(`./renderer/assets/img/tray.png`);
-    tasks.submenu.push({
-        label: 'Maximize',
-        click:(_,window)=>{
-            if (window.isMinimized()) {
-                window.restore();
-            }
-            window.maximize();
-        }
-    });
-    let trayMenu = Menu.buildFromTemplate(tasks.submenu);
-
+    let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow));
+    let trayMenu = Menu.buildFromTemplate(trayTasks);
     trayIcon.setContextMenu(trayMenu);
 }
 
