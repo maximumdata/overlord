@@ -50,7 +50,7 @@ const createMainWindow = () => {
     initAutoUpdate();
 
     // this is wicked sloppy
-    let trayIcon = new Tray(`./renderer/assets/img/tray.png`);
+    let trayIcon = new Tray(`./build/tray.png`);
     let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow));
     let trayMenu = Menu.buildFromTemplate(trayTasks);
     trayIcon.setContextMenu(trayMenu);
