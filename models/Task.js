@@ -1,5 +1,5 @@
 const { spawn } = require('child_process');
-const { mainWindow } = require('../main.js');
+// const { mainWindow } = require('../main.js');
 const { ipcMain } = require('electron');
 const notifier = require('node-notifier');
 // this will be a class that can run a child process and pipe output and erorrs to log files.
@@ -57,9 +57,15 @@ class Task {
 
                     notifier.notify({
                         title: `Task complete`,
-                        message: `${this.name} has completed. Check the console output for more details.`
+                        message: `${this.name} has completed. Check the console output for more details.`,
+                        wait: true
                     });
+
                 }
+            });
+
+            notifier.on('click', function(notifierObject, options) {
+              window.restore();
             });
         } catch (e) {
             console.log(e)
