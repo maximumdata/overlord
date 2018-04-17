@@ -1,5 +1,4 @@
 const { app, Menu, BrowserWindow, ipcMain, Tray } = require('electron');
-const autoUpdater = require('electron-updater').autoUpdater;
 const isDev = require('electron-is-dev');
 const notifier = require('node-notifier');
 const path = require('path');
@@ -47,49 +46,12 @@ const createMainWindow = () => {
     });
 
     mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
-    initAutoUpdate();
 
     // this is wicked sloppy
-    let trayIcon = new Tray(`./build/tray.png`);
+    let trayIcon = new Tray(`${path.join(__dirname, 'build/')}tray.png`);
     let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow));
     let trayMenu = Menu.buildFromTemplate(trayTasks);
     trayIcon.setContextMenu(trayMenu);
-}
-
-/**
- * Sets up the autoUpdater
- * @return {null}
- */
-const initAutoUpdate = () => {
-    if (isDev || process.platform === 'linux') {
-        return;
-    }
-
-    autoUpdater.checkForUpdates();
-    autoUpdater.signals.updateDownloaded(showUpdateNotification);
-}
-
-/**
- * Shows update available notification
- * @param  {Object} it Notifcation object from autoUpdater
- * @return {null}
- */
-const showUpdateNotification = (it) => {
-    it = it || {};
-    const restartNowAction = 'Restart Now';
-
-    const versionLabel = it.label ? `Version ${it.version}` : 'The latest version';
-
-    notifier.notify({
-        title: 'A new update is ready to install.',
-        message: `${versionLabel} has been downloaded and will be automatically installed after restart.`,
-        closeLabel: 'Okay',
-        actions: restartNowAction
-    }, (err, res, meta) => {
-        if (err) throw err;
-        if (meta.activationValue !== restartNowAction) { return; }
-        autoUpdater.quitAndInstall();
-    });
 }
 
 /**

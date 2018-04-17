@@ -8,5 +8,12 @@ module.exports = (mainWindow) => {
                 mainWindow.minimize();
             }
         }
-    }]
+    }, {
+        label: 'Quit',
+        accelerator: 'CmdOrCtrl+Q',
+        click: () => {
+            force_quit = true;
+            app.quit();
+        }
+    }];
 }
