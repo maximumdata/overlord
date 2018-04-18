@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow, ipcMain, Tray } = require('electron');
+const { app, Menu, BrowserWindow, ipcMain, Tray, nativeImage } = require('electron');
 const isDev = require('electron-is-dev');
 const notifier = require('node-notifier');
 const path = require('path');
@@ -48,10 +48,10 @@ const createMainWindow = () => {
     mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
 
     // this is wicked sloppy
-    let trayIcon = new Tray(`${path.join(__dirname, 'build/')}tray.png`);
+    let tray = new Tray(path.join(__dirname, 'renderer/assets/img/tray.png'));
     let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow));
     let trayMenu = Menu.buildFromTemplate(trayTasks);
-    trayIcon.setContextMenu(trayMenu);
+    tray.setContextMenu(trayMenu);
 }
 
 /**
