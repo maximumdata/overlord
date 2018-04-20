@@ -14,12 +14,13 @@ class Task {
         this.name = opts.name;
         this.command = opts.command;
         this.args = opts.args;
+        this.cwd = opts.cwd || '.';
         this.container = 'output';
     }
 
     run(window) {
         try {
-            let spawnedProc = spawn(this.command, this.args);
+            let spawnedProc = spawn(this.command, this.args);//, { cwd: this.cwd });
 
             window.processes.push(spawnedProc);
 

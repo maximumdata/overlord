@@ -1,4 +1,4 @@
-const tasks = [require('./maven'), require('./nukemaven')];
+const tasks = [require('./maven'), require('./nukemaven'), require('./ams'), require('./gulpwatch')];
 
 module.exports = (window) => {
     return {

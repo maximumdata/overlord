@@ -6,6 +6,11 @@ const fixPath = require('fix-path')();
 const stores = require('./stores');
 let mainWindow; // do this so that the window object doesn't get GC'd
 
+// oh my god
+// Add the node_modules/.bin directory to the PATH
+var PATH_SEPARATOR = process.platform.match(/^win/) ? ';' : ':';
+process.env.PATH = path.join(__dirname, 'node_modules', '.bin') + PATH_SEPARATOR + process.env.PATH;
+
 /**
  * Called when a new window needs to be created. Will create the renderer window,
  * add the menu, set window specific events, and load index.html
@@ -45,11 +50,11 @@ const createMainWindow = () => {
         mainWindow = null;
     });
 
-    mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
-
+    //mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
+    mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/settings.html')}`);
     // this is wicked sloppy
     let tray = new Tray(path.join(__dirname, 'renderer/assets/img/tray.png'));
-    let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow));
+    let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow, app));
     let trayMenu = Menu.buildFromTemplate(trayTasks);
     tray.setContextMenu(trayMenu);
 }
@@ -103,3 +108,7 @@ app.on('before-quit', beforeQuit);
 app.on('window-all-closed', windowAllClosed);
 
 app.on('activate', activate);
+
+ipcMain.on('setting-save', (event, args) => {
+    stores.settings.set(args.key, args.value);
+});

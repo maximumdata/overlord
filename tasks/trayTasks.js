@@ -1,4 +1,4 @@
-module.exports = (mainWindow) => {
+module.exports = (mainWindow, app) => {
     return [{
         label: 'Show/Hide',
         click: () => {
