@@ -110,5 +110,8 @@ app.on('window-all-closed', windowAllClosed);
 app.on('activate', activate);
 
 ipcMain.on('setting-save', (event, args) => {
-    stores.settings.set(args.key, args.value);
+    Object.entries(args).forEach(([key, value]) => {
+        stores.settings.set(key, value);
+    });
+    event.sender.send('button-return', stores.settings.getAll())
 });

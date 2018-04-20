@@ -7,14 +7,14 @@
     <title>Overlord | Settings</title>
 </head>
 <body>
-    <form>
+    <form id="settings">
         <div>
             <label for="repo">Mopar.com Repo Location:</label>
-            <input type="text" name="repo">
+            <input type="text" name="repo" data-dir="true">
         </div>
         <div>
             <label for="dam">Mopar Dam Location:</label>
-            <input type="text" name="dam">
+            <input type="text" name="dam" data-dir="true">
         </div>
         <div>
             <label for="remote">Remote instance URL:</label>
@@ -22,21 +22,6 @@
         </div>
         <input type="submit">
     </form>
-
-    <div id="repo">
-        <label>Mopar Repo Location:</label>
-        <input type="text" name="repo"/><button data-for="repo">Save</button>
-    </div>
-
-    <div id="dam">
-        <label>Mopar Dam Location:</label>
-        <input type="text" name="dam"/><button data-for="dam">Save</button>
-    </div>
-
-    <div id="remote">
-        <label>Remote instance URL:</label>
-        <input type="text" name="remote"><button data-for="remote">Save</button>
-    </div>
 
     <script src="./assets/js/settings.js" charset="utf-8"></script>
 </body>
