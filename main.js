@@ -50,8 +50,8 @@ const createMainWindow = () => {
         mainWindow = null;
     });
 
-    //mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html')}`);
-    mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/settings.html')}`);
+    mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html#index')}`);
+    // mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/settings.html')}`);
     // this is wicked sloppy
     let tray = new Tray(path.join(__dirname, 'renderer/assets/img/tray.png'));
     let trayTasks = tasks.submenu.concat(require('./tasks/trayTasks.js')(mainWindow, app));

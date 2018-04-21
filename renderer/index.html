@@ -4,6 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Overlord</title>
+</head>
+<body>
+    <nav>
+        <h1>Overlord</h1>
+        <ul>
+            <li>
+                <a href="#" data-view="index"><i class="fas fa-terminal"></i> Console</a>
+            </li>
+            <li>
+                <a href="#" data-view="settings"><i class="fas fa-cogs"></i> Settings</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <section data-view="index">
+            <div id="output"></div>
+        </section>
+        <section data-view="settings">
+            <form id="settings">
+                <div>
+                    <label for="repo">Mopar.com Repo Location:</label>
+                    <input type="text" name="repo" data-dir="true">
+                </div>
+                <div>
+                    <label for="dam">Mopar Dam Location:</label>
+                    <input type="text" name="dam" data-dir="true">
+                </div>
+                <div>
+                    <label for="remote">Remote instance URL:</label>
+                    <input type="text" name="remote">
+                </div>
+                <input type="submit">
+            </form>
+        </section>
+    </main>
+
+    <script src="./assets/js/index.js" charset="utf-8"></script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Overlord</title>
 </head>
 <body>
@@ -35,9 +85,24 @@
     }
 </style>
     <section id="output"></section>
-    <!-- <section id="maven-out"></section>
-    <section id="nukemaven-out"></section> -->
 
-<script src="./assets/js/index.js" charset="utf-8"></script>
+
+<form id="settings">
+    <div>
+        <label for="repo">Mopar.com Repo Location:</label>
+        <input type="text" name="repo" data-dir="true">
+    </div>
+    <div>
+        <label for="dam">Mopar Dam Location:</label>
+        <input type="text" name="dam" data-dir="true">
+    </div>
+    <div>
+        <label for="remote">Remote instance URL:</label>
+        <input type="text" name="remote">
+    </div>
+    <input type="submit">
+</form>
+
+<script src="./assets/js/settings.js" charset="utf-8"></script>
 </body>
-</html>
+</html> -->
