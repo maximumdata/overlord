@@ -9,6 +9,7 @@
     "dist": "build"
   },
   "build": {
+    "asarUnpack": "deps/package.json",
     "appId": "com.mikedettmer.overlord",
     "dmg": {
       "contents": [
@@ -17,7 +18,7 @@
           "y": 150
         },
         {
-          "x": 310,
+          "x": 410,
           "y": 150,
           "type": "link",
           "path": "/Applications"
@@ -42,6 +43,7 @@
     "fix-path": "^2.1.0",
     "gulp": "^3.9.1",
     "node-notifier": "^5.2.1",
+    "npm-cmd": "^0.2.0",
     "untildify": "^3.0.2"
   },
   "devDependencies": {

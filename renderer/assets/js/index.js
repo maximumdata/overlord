@@ -36,11 +36,6 @@ const View = {
     set: (view) => {
         return window.location.hash = view;
     }
-
-}
-
-const toggleShowingClass = (el) => {
-    return el.classList.toggle('showing');
 }
 
 const setView = (view) => {
@@ -107,3 +102,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
         button.addEventListener('click', _onNavClick);
     })
 });
+
+const remote = require('electron').remote;
+console.log(remote.app.getAppPath());

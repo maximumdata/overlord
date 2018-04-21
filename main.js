@@ -1,6 +1,7 @@
 const { app, Menu, BrowserWindow, ipcMain, Tray, nativeImage } = require('electron');
 const isDev = require('electron-is-dev');
 const notifier = require('node-notifier');
+const npm = require('npm-cmd');
 const path = require('path');
 const fixPath = require('fix-path')();
 const stores = require('./stores');
@@ -9,14 +10,36 @@ let mainWindow; // do this so that the window object doesn't get GC'd
 // oh my god
 // Add the node_modules/.bin directory to the PATH
 var PATH_SEPARATOR = process.platform.match(/^win/) ? ';' : ':';
-process.env.PATH = path.join(__dirname, 'node_modules', '.bin') + PATH_SEPARATOR + process.env.PATH;
+process.env.PATH = path.join(app.getAppPath(), '..','app.asar.unpacked', 'deps', 'node_modules', '.bin') + PATH_SEPARATOR + process.env.PATH;
+process.env.PATH = path.join(app.getAppPath(), 'deps','node_modules','.bin') + PATH_SEPARATOR + process.env.PATH;
+
+const checkIfNpmInstallRan = () => {
+    const fs = require('fs');
+    let rootPath = isDev ? `${path.join(app.getAppPath(), 'deps')}` : `${path.join(app.getAppPath(), '..','app.asar.unpacked','deps')}`;
+    let p = path.join(rootPath, 'node_modules','.bin');
+    console.log(p);
+    if (!fs.existsSync(p)) {
+        createMainWindow('loading');
+        let cwd = isDev ? `${path.join(app.getAppPath(), 'deps')}` : `${path.join(app.getAppPath(), '..','app.asar.unpacked','deps')}`
+        npm.install(['gulp', 'aemmultisync'], {save: true, cwd}, (err) => {
+          if (err) {
+            mainWindow.loadURL(`file://${path.join(__dirname, `renderer/index.html#error`)}`);
+          } else {
+            // console.log('Installation succeeded!');
+            mainWindow.loadURL(`file://${path.join(__dirname, `renderer/index.html#settings`)}`);
+          }
+        });
+    } else {
+        createMainWindow('index');
+    }
+}
 
 /**
  * Called when a new window needs to be created. Will create the renderer window,
  * add the menu, set window specific events, and load index.html
  * @return {null}
  */
-const createMainWindow = () => {
+const createMainWindow = (view) => {
     // create the new window and set the processes array on it
     mainWindow = new BrowserWindow(stores.window.get('windowBounds'));
     mainWindow.processes = [];
@@ -50,7 +73,7 @@ const createMainWindow = () => {
         mainWindow = null;
     });
 
-    mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/index.html#index')}`);
+    mainWindow.loadURL(`file://${path.join(__dirname, `renderer/index.html#${view || 'index'}`)}`);
     // mainWindow.loadURL(`file://${path.join(__dirname, 'renderer/settings.html')}`);
     // this is wicked sloppy
     let tray = new Tray(path.join(__dirname, 'renderer/assets/img/tray.png'));
@@ -100,7 +123,7 @@ const activate = () => {
 }
 
 // event handlers
-app.on('ready', createMainWindow);
+app.on('ready', checkIfNpmInstallRan);
 
 app.on('before-quit', beforeQuit);
 
