@@ -6,11 +6,12 @@ const { app } = require('electron');
 
 // const what = app.getAppPath();
 // const huh = path.join(what, '..','app.asar.unpacked', 'deps', 'node_modules', 'gulp', 'bin', 'gulp.js');
+const isWin = process.platform.match(/^win/);
 
 module.exports = new Task({
     name: 'Gulp Watch',
     container: 'nukemaven-out',
-    command: `gulp`,
+    command: `gulp${isWin ? '.cmd' : ''}`,
     args: [
         //huh, //path.join(__dirname, '../node_modules/gulp/bin/gulp.js'),
         //`${path.join(app.getAppPath(), 'app.asar.unpacked','deps','node_modules','gulp','bin','gulp.js')}`,
