@@ -10,23 +10,21 @@ let mainWindow; // do this so that the window object doesn't get GC'd
 // oh my god
 // Add the node_modules/.bin directory to the PATH
 var PATH_SEPARATOR = process.platform.match(/^win/) ? ';' : ':';
-process.env.PATH = path.join(app.getAppPath(), '..','app.asar.unpacked', 'deps', 'node_modules', '.bin') + PATH_SEPARATOR + process.env.PATH;
-process.env.PATH = path.join(app.getAppPath(), 'deps','node_modules','.bin') + PATH_SEPARATOR + process.env.PATH;
-process.env.PATH = path.join(app.getAppPath(), 'deps', 'apache-maven-3.5.3','bin') + PATH_SEPARATOR + process.env.PATH;
-process.env.PATH = path.join(app.getAppPath(), 'app.asar.unpacked','deps', 'apache-maven-3.5.3','bin') + PATH_SEPARATOR + process.env.PATH;
 
+process.env.PATH = path.join(app.getPath('userData'), 'deps','node_modules','.bin') + PATH_SEPARATOR + process.env.PATH;
 
 const checkIfNpmInstallRan = () => {
     const fs = require('fs');
-    let rootPath = isDev ? `${path.join(app.getAppPath(), 'deps')}` : `${path.join(app.getAppPath(), '..','app.asar.unpacked','deps')}`;
-    let p = path.join(rootPath, 'node_modules','.bin');
-    console.log(p);
+
+    let p = (path.join(app.getPath('userData'), 'deps'));
     if (!fs.existsSync(p)) {
+        fs.mkdirSync(p);
         createMainWindow('loading');
-        let cwd = isDev ? `${path.join(app.getAppPath(), 'deps')}` : `${path.join(app.getAppPath(), '..','app.asar.unpacked','deps')}`
-        npm.install(['gulp', 'aemmultisync'], {save: true, cwd}, (err) => {
+        //let cwd = //isDev ? `${path.join(app.getAppPath(), 'deps')}` : `${path.join(app.getAppPath(), '..','app.asar.unpacked','deps')}`
+        npm.install(['gulp', 'aemmultisync'], {save: true, cwd: p}, (err) => {
           if (err) {
             mainWindow.loadURL(`file://${path.join(__dirname, `renderer/index.html#error`)}`);
+            console.log(err);
           } else {
             // console.log('Installation succeeded!');
             mainWindow.loadURL(`file://${path.join(__dirname, `renderer/index.html#settings`)}`);

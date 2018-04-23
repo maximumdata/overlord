@@ -23,6 +23,10 @@ body {
     font-size: 14px;
 }
 
+main {
+    max-width: calc(100vw - 200px);
+}
+
 nav {
     background: brown;
     color: white;
@@ -43,5 +47,4 @@ nav > h1 {
     max-height: 400px;
     font-family: monospace;
     white-space: pre;
-    /* margin: 5px; */
 }
