@@ -9,7 +9,7 @@
     "dist": "build"
   },
   "build": {
-    "asarUnpack": "deps/package.json",
+    "asarUnpack": ["deps/apache-maven-3.5.3/**", "deps/package.json"],
     "appId": "com.mikedettmer.overlord",
     "dmg": {
       "contents": [

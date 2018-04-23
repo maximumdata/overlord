@@ -12,6 +12,9 @@ let mainWindow; // do this so that the window object doesn't get GC'd
 var PATH_SEPARATOR = process.platform.match(/^win/) ? ';' : ':';
 process.env.PATH = path.join(app.getAppPath(), '..','app.asar.unpacked', 'deps', 'node_modules', '.bin') + PATH_SEPARATOR + process.env.PATH;
 process.env.PATH = path.join(app.getAppPath(), 'deps','node_modules','.bin') + PATH_SEPARATOR + process.env.PATH;
+process.env.PATH = path.join(app.getAppPath(), 'deps', 'apache-maven-3.5.3','bin') + PATH_SEPARATOR + process.env.PATH;
+process.env.PATH = path.join(app.getAppPath(), 'app.asar.unpacked','deps', 'apache-maven-3.5.3','bin') + PATH_SEPARATOR + process.env.PATH;
+
 
 const checkIfNpmInstallRan = () => {
     const fs = require('fs');
