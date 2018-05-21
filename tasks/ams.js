@@ -11,7 +11,9 @@ module.exports = new Task({
         '-t',
         'http://admin:admin@miked-aem.vectorform.com:4503',
         '-w',
-        '~/dev/mopar/frontend,~/dev/dam'
+        '~/dev/mopar/frontend,~/dev/dam',
+        '-e',
+        '**/node_modules/*'
     ]
 });
 

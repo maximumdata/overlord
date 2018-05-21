@@ -42,7 +42,7 @@
   "author": "Mike Dettmer <mike@mikedettmer.com>",
   "license": "ISC",
   "dependencies": {
-    "aemmultisync": "^2.0.0",
+    "aemmultisync": "latest",
     "electron-is-dev": "^0.3.0",
     "fix-path": "^2.1.0",
     "gulp": "^3.9.1",
